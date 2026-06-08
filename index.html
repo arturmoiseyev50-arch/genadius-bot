@@ -3,47 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Генадиус - Заявка</title>
+    <title>Genadius Service</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: sans-serif; padding: 20px; background: #f4f4f9; }
-        .container { max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 15px; }
-        .form-group { margin-bottom: 15px; }
-        input, select, textarea { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: #0088cc; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        :root { --accent: #007AFF; --bg: #F2F2F7; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; padding: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 24px; color: #1C1C1E; margin: 0; }
+        .header p { color: #8E8E93; font-size: 14px; }
+        .card { background: white; padding: 24px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .label { font-size: 13px; font-weight: 600; color: #8E8E93; margin-bottom: 8px; display: block; }
+        select, textarea, input { width: 100%; border: none; background: #F2F2F7; padding: 16px; border-radius: 12px; font-size: 16px; margin-bottom: 20px; box-sizing: border-box; }
+        button { width: 100%; background: var(--accent); color: white; border: none; padding: 18px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Сервис "Генадиус"</h2>
-        <div class="form-group">
-            <label>Тип оборудования:</label>
-            <select id="service">
-                <option value="Котел">Ремонт котла</option>
-                <option value="Кондиционер">Ремонт кондиционера</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Описание проблемы:</label>
-            <textarea id="desc" rows="4"></textarea>
-        </div>
-        <div class="form-group">
-            <label>Ваш номер телефона:</label>
-            <input type="tel" id="phone" placeholder="+7 (999) 000-00-00">
-        </div>
-        <button id="mainButton" onclick="submitForm()">ОТПРАВИТЬ ЗАЯВКУ</button>
+    <div class="header">
+        <h1>Генадиус</h1>
+        <p>Профессиональный сервис оборудования</p>
+    </div>
+    <div class="card">
+        <label class="label">ВЫБЕРИТЕ УСЛУГУ</label>
+        <select id="service">
+            <option>Ремонт котла</option>
+            <option>Ремонт кондиционера</option>
+        </select>
+        
+        <label class="label">ОПИСАНИЕ ПРОБЛЕМЫ</label>
+        <textarea id="desc" placeholder="Что случилось?"></textarea>
+
+        <button onclick="submitForm()">ОТПРАВИТЬ ЗАЯВКУ</button>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
-        tg.expand(); 
-
+        tg.expand();
+        tg.MainButton.text = "ОТПРАВИТЬ";
+        
         function submitForm() {
             const data = {
                 service: document.getElementById('service').value,
                 desc: document.getElementById('desc').value,
-                phone: document.getElementById('phone').value,
-                user: tg.initDataUnsafe.user ? tg.initDataUnsafe.user.first_name : "Гость"
+                user: tg.initDataUnsafe.user?.first_name
             };
             tg.sendData(JSON.stringify(data));
         }
